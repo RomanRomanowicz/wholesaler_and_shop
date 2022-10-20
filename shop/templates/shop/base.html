@@ -1,0 +1,60 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+{% block head %}
+<head>
+    <div id="head">
+        <meta charset="utf-8"/>
+        {% block title %}
+        <div class="title">
+            <h1>My shop</h1>
+        </div>
+        {% endblock %}
+        <menu>{% block menu %}{% endblock %}</menu>
+        <div id="header">
+            <a href="/" class="logo">My shop</a>
+        </div>
+        <div id="subheader">
+            <div class="cart">
+                Your cart is empty.
+            </div>
+        </div>
+        <link href="{% static 'shop/css/base.css' %}" rel="stylesheet">
+        <!-- CSS only -->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
+    </div>
+</head>
+{% endblock %}
+
+<body>
+{% block page %}
+    <div id="content">
+        {% block sidebar %}
+            <div id="sidebar">
+                <h3>Categories</h3>
+                <ul>
+                    <li {% if not category %}class="selected"{% endif %}>
+                        <a href="{% url 'shop:product_list' %}">All</a>
+                    </li>
+                    {% for c in categories %}
+                        <li {% if category.slug == c.slug %}class="selected"{% endif %}>
+                            <a href="{{ c.get_absolute_url }}">{{ c.name }}</a>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+	    {% endblock %}
+
+        {% block content %}
+        {% endblock %}
+    </div>
+{% endblock %}
+
+{% block footer %}
+	{% block copyright %}
+	{% endblock %}
+{% endblock %}
+<!-- JavaScript Bundle with Popper -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous"></script>
+</body>
+</html>
