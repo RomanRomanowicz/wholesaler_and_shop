@@ -16,11 +16,13 @@ Including another URLconf
 from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
-from django.urls import path, include
+from django.urls import path, include, re_path
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include('shop.urls'), name='shop'),
+    # re_path(r'^cart/', include('cart.urls', namespace='cart')),
+    path('cart/', include('cart.urls', namespace='cart')),
+    path('', include('shop.urls', namespace='shop')),
 ]
 
 if settings.DEBUG:
