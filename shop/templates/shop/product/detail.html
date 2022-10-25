@@ -18,5 +18,9 @@
             <input type="submit" value="Add to cart">
         </form>
         {{ product.description|linebreaks }}
+        <h1>{{ product.id }}  {{ product.slug }}    {{ product }}</h1>
+        <p>
+            <a href="{% url 'shop:post_message' %}" >Share this post pytanie do sprzedjącego</a>
+        </p>
     </div>
 {% endblock %}
