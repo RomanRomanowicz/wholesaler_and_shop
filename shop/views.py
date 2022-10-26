@@ -22,10 +22,21 @@ def product_detail(request, id, slug):
     return render(request, 'shop/product/detail.html', {'product': product, 'cart_product_form': cart_product_form})
 
 
-"""zapytanie do sprzedającego"""
-
-
-def post_message(request):
-
-    send_mail('cześć', 'message', 'cop.romanowicz@gmail.com', ['rr.romanowicz@gmail.com'], fail_silently=False)
-    return render(request, 'shop/product/message.html')
+def post_message(request, id):
+    """question to the store"""
+    product = get_object_or_404(Product, id=id, available=True)
+    sent = False
+    if request.method == 'POST':
+        # Form was submitted
+        form = EmailPostForm(request.POST)
+        if form.is_valid():
+            # Form fields passed validation
+            cd = form.cleaned_data
+            post_url = request.build_absolute_uri(product.get_absolute_url())
+            subject = '{} ({}) asks a question: "{}"'.format(cd['your_name'], cd['your_email'], product.name)
+            message = 'question: "{}" at {}\n\n{}\'s contents: {}'.format(product.name, post_url, cd['your_name'], cd['question'])
+            send_mail(subject, message, 'cop.romanowicz@gmail.com', ['cop.romanowicz@gmail.com', cd['your_email']])
+            sent = True
+    else:
+        form = EmailPostForm()
+    return render(request, 'shop/product/message.html', {'product': product, 'form': form, 'sent': sent})
